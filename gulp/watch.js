@@ -3,9 +3,10 @@
 var path = require('path');
 var gulp = require('gulp');
 var conf = require('./conf');
-
+var buffer = require('vinyl-buffer');
 var browserSync = require('browser-sync');
 var $ = require('gulp-load-plugins')();
+var spritesmith = require('gulp.spritesmith');
 
 function isOnlyChange(event) {
   return event.type === 'changed';
@@ -40,8 +41,15 @@ gulp.task('watch', function () {
     }
   });
 
+    gulp.watch([
+        path.join(conf.paths.src, '/images/slice/*.png'),
+    ], function(event) {
+        gulp.start('sprite');
+    });
+
 });
 
+/*编译less*/
 gulp.task('less', function () {
   gulp.watch([
     path.join(conf.paths.src, '/**/*.less'),
@@ -51,4 +59,23 @@ gulp.task('less', function () {
       .pipe($.autoprefixer()).on('error', conf.errorHandler('Autoprefixer'))
       .pipe(gulp.dest(path.join(conf.paths.tmp, '/serve/css/')));
   });
-})
+});
+
+/*自动化sprite*/
+gulp.task('sprite', function () {
+  var spriteData = gulp.src(conf.paths.src + '/images/slice/*.png').pipe(spritesmith({
+          imgName: 'sprite.png',
+          imgPath: '../images/sprite.png?t=' + new Date().getTime(),
+          cssName: 'sprite.less',
+          cssFormat: 'less',
+          cssTemplate: './gulp/custom.template',
+          lgorithm: 'binary-tree',
+        }))
+      // .pipe(gulp.dest('path/to/output/'));
+
+  spriteData.img
+      .pipe(buffer())
+      .pipe($.imagemin())
+      .pipe(gulp.dest(path.join(conf.paths.src, '/images/'))); // output path for the sprite
+  spriteData.css.pipe(gulp.dest(path.join(conf.paths.src, '/less/'))); // output path for the CSS
+});
