@@ -20,7 +20,7 @@ gulp.task('partials', function () {
       collapseWhitespace: true
     }))
     .pipe($.angularTemplatecache('templateCacheHtml.js', {
-      module: 'IXTCenter',
+      module: 'mosign',
       root: 'view'
     }))
     .pipe(gulp.dest(conf.paths.tmp + '/partials/'));
