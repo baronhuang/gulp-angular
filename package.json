@@ -3,7 +3,10 @@
   "version": "1.0.0",
   "description": "gulp+angular的简单开发模板",
   "main": "gulpfile.js",
-  "dependencies": {},
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0"
+  },
   "devDependencies": {
     "browser-sync": "~2.9.11",
     "browser-sync-spa": "~1.0.3",

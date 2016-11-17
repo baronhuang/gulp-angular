@@ -6,6 +6,6 @@
 
 (function(){
     window.MOSIGN_CONFIG = {
-        httpUrl: 'http://localhost:3000/'
+        httpUrl: '/'
     }
 })();

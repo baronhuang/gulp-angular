@@ -25,13 +25,18 @@ function browserSyncInit(baseDir, browser) {
    *
    * For more details and option, https://github.com/chimurai/http-proxy-middleware/blob/v0.9.0/README.md
    */
-  // server.middleware = proxyMiddleware('/users', {target: 'http://jsonplaceholder.typicode.com', changeOrigin: true});
+  /*配置代理，用来跨域*/
+  var target = 'http://localhost:8080/';
+  server.middleware = [
+      proxyMiddleware(['/listNotes', '/getNote', '/createNote', '/updateNote', '/removeNote'], {target: target, changeOrigin: false}),
+  ];
 
   browserSync.instance = browserSync.init({
     startPath: '/',
     server: server,
     browser: browser
   });
+
 }
 
 browserSync.use(browserSyncSpa({
